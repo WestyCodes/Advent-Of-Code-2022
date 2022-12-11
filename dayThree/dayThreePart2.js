@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 const main = async () => {
-    const data = await fs.readFile('./dayThree/elfBagTest.txt', 'utf8')
+    const data = await fs.readFile('./dayThree/elfBaggage.txt', 'utf8')
     const dataArray = data.split('\r\n')
     const values = {
         a: 1, b: 2, c: 3,
@@ -23,7 +23,38 @@ const main = async () => {
         Z: 52
     }
 
-    console.log(dataArray)
+    let totalBadgePoints = 0
+
+    for (let i = 0; i < dataArray.length-1; i+=3) {
+        const firstLine = []
+        const secondLine = []
+        const thirdLine = []
+        const arrays = [firstLine, secondLine, thirdLine]
+        let currentStringA = dataArray[i]
+        let currentStringB = dataArray[i+1]
+        let currentStringC = dataArray[i+2]
+            for (let j = 0; j < currentStringA.length; j++) {
+                firstLine.push(currentStringA[j])  
+            }
+
+            for (let k = 0; k < currentStringB.length; k++) {
+                secondLine.push(currentStringB[k])  
+            }
+
+            for (let l = 0; l < currentStringC.length; l++) {
+                thirdLine.push(currentStringC[l])  
+            }
+
+        let result = arrays.shift().filter(function(v) {
+            return arrays.every(function(a) {
+                return a.indexOf(v) !== -1;
+            });
+        });
+
+        let finalResult = result[0]
+        totalBadgePoints += values[finalResult]
+    }
+    console.log(totalBadgePoints)
 }
 
 main()
